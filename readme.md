@@ -438,6 +438,7 @@ would take only O(log_2(n)) reads since the database can perform a binary search
 ### 2.2.2. Composite index
 A composite index is an index based on the values in multiple columns of a table.
 Back to our example:
+
 | ID  | first_name | last_name    | Class      | Position | ssn  |
 | --- | ---------- | ------------ | ---------- | -------- | ---- |
 | 1   | Teemo      | Shroomer     | Specialist | Top      | 2345 |
@@ -455,6 +456,7 @@ Back to our example:
 CREATE INDEX class_pos_index ON users (class, position);
 ```
 Then we will have a B-tree like this
+
 ![](images/indexing.png)
 To execute a query with composite index.
 We **must** provide index keys **in order**.
