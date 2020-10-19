@@ -1,7 +1,7 @@
 # MongoDB
-## Why use MongoDB
+## Why use MongoDB ?
 - Combine the best features of key-value stores and relational databases
-- Is designed to `rapidly develop`, prototype web-application and internet infrastructures.
+- Is designed to `rapidly develop`, prototype web-application and internet infrastructures.  We can start writing code immediately and move fast.
 - Flexible data model: Don't need to do a lot of `planning around schemas`
 - The data model and persistence strategies are built for high `read-and-write throughput`
 - Easy to set up a high availibity with `automatic failover`
@@ -17,9 +17,6 @@
 Your application code and not the database, enforces the data’s structure. 
 
 This can speed up initial application development when the schema is changing frequently.
-
-
-
 
 ### 3. Indexes
 ![](images/2020-10-09-08-23-40.png)
@@ -49,13 +46,12 @@ In Mongodb, users control the speed and durablity trade-off by choosing` write s
 - MongoDB provide range-based partitioning mechanism known as `sharding` which atutomatically manages the distribution of data across node
 - No application code has to handle the logic of sharding
 
+### 7. Aggregation [2]
+MongoDB have an aggregation framework modeled on the concept of data processing pipelines that allows you to do expressive analytical query on the database easily, which is a feature that traditional `SQL` don't support.
 
-## Why mongoDB?
+![](images/2020-10-15-10-14-29.png)
 
-
-
-## Tips and limitations
-- MongoDB should usually run on 64-bit machines, 
+### 
 
 
 ## Suitable usecases
@@ -86,15 +82,14 @@ https://derickrethans.nl/managing-schema-changes.html
 ## Strength and weakness
 ### Strength
 - Be able to handle huge amounts of data(and huge amounts of request) by replication and horizontal scaling. 
-- Flexible data modelm, no need to conform a schema
+- Flexible data model, no need to conform a schema
 - Easy to use
 
 ### Weakness
-- Encourage denormalization of schemas
+- Encourage denormalization of schemas, thus lead to `duplicate` data
 - Mongo is focused on large datasets, works best in large cluster, which can require some effort to design and manage, setting up a Mongo cluster requires a little more forethought
 - Database management is complex
-- Consume too much memory for creating index: MongoDB grabs all the RAM it can get to cache each accessed document as long as possible.
-- MongoDB automatically uses all free memory on the machine as its cache. System resource monitors show that MongoDB uses a lot of memory, but its usage is dynamic. If another process suddenly needs half the server’s RAM, MongoDB will yield cached memory to the other process.[1]
+- If indexing is implemented poorly or composite index in an incorrect order, MongoDB can be one of the `slowest database`
 
 ## Mongodb index
 http://learnmongodbthehardway.com/schema/indexes/
@@ -104,6 +99,58 @@ http://learnmongodbthehardway.com/schema/indexes/
 - An index increases the time it takes to insert a document
 - Indexes trade off faster queries against storage space.
 
+- MongoDB automatically uses all free memory on the machine as its cache. System resource monitors show that MongoDB uses a lot of memory, but its usage is dynamic. If another process suddenly needs half the server’s RAM, MongoDB will yield cached memory to the other process.[1]
+
+## Database modeling
+```
+Inp progess ....
+```
+
+## MongoBB replicaset
+- Group of mongod processes that maintain the same dataset
+- Redundancy and high availability
+- Increased read capacity
+  
+![replica-set-read-write-operations-primary.bakedsvg.svg](https://docs.mongodb.com/manual/_images/replica-set-read-write-operations-primary.bakedsvg.svg)
+
+![648e69b1.png](images/mongodb-replicaset/648e69b1.png)
+
+![b2aa36d1.png](images/mongodb-replicaset/b2aa36d1.png)
+
+![e7b2e770.png](images/mongodb-replicaset/e7b2e770.png)
+
+![378a5b1f.png](images/mongodb-replicaset/378a5b1f.png)
+
+![53f7d13b.png](images/mongodb-replicaset/53f7d13b.png)
+
+![de1f1c67.png](images/mongodb-replicaset/de1f1c67.png)
+
+![3265315e.png](images/mongodb-replicaset/3265315e.png)
+
+![2b6a83ef.png](images/mongodb-replicaset/2b6a83ef.png)
+
+![676c1811.png](images/mongodb-replicaset/676c1811.png)
+- Manager in application driver 
+
+![d1b63713.png](images/mongodb-replicaset/d1b63713.png)
+
+Replica sets allow us high availability, but some point of time, we want
+
+![42075f95.png](images/mongodb-replicaset/42075f95.png)
+
+![cda7fe4a.png](images/mongodb-replicaset/cda7fe4a.png)
+
+![10d422c0.png](images/mongodb-replicaset/10d422c0.png)
+
+![32cf40dc.png](images/mongodb-replicaset/32cf40dc.png)
+
+
+![9a3d1e67.png](images/mongodb-replicaset/9a3d1e67.png)
+
+![5de8cac9.png](images/mongodb-replicaset/5de8cac9.png)
+
 ## References
 [1]https://stackoverflow.com/a/22010542
+
+[2] https://docs.mongodb.com/manual/core/map-reduce/
 
