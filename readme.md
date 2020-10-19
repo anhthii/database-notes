@@ -399,6 +399,7 @@ Querying a database table of n records by a field other than a <i>**key**</i>, r
 - Each record in the index also includes a pointer to the original record in the table, such that finding records in the index is equivalent to finding records in the original table.
 
 For example: We have a data sample
+
 | ID  | first_name | last_name    | Class      | Position | ssn  |
 | --- | ---------- | ------------ | ---------- | -------- | ---- |
 | 1   | Teemo      | Shroomer     | Specialist | Top      | 2345 |
