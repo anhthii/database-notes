@@ -458,6 +458,7 @@ CREATE INDEX class_pos_index ON users (class, position);
 Then we will have a B-tree like this
 
 ![](images/indexing.png)
+
 To execute a query with composite index.
 We **must** provide index keys **in order**.
 ```
