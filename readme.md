@@ -632,6 +632,7 @@ CREATE TABLE seats(
 )
 ```
 ![](images/readme.md/2020-10-19-07-27-12.png)
+
 ```js
 query = "SELECT * FROM seats WHERE id = 15 and is_booked = false"
 result = sqlConn.query(query)
@@ -642,7 +643,9 @@ if (result) {
 updateQuery = "UPDATE seats set isBooked = true and customer_id = $customer_id"
 sqlConn.Execute(updateQuery)
 ```
+
 These lines of code seem to work fine. However this piece of code has a vulnerability and will break when there are two customers concurrently trying to book the same seat and will cause inconsistent behaviours.
+
 | Customer id = 1                                                    | Customer id = 2                                                    |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
 | SELECT * FROM seats WHERE id = 15 and is_booked = false            | SELECT * FROM seats WHERE id = 15 and is_booked = false            |
@@ -650,6 +653,7 @@ These lines of code seem to work fine. However this piece of code has a vulnerab
 | update seat set is_booked = true and customer _id = 1 where id =15 |                                                                    |
 | ... a moment later                                                 | ....                                                               |
 |                                                                    | update seat set is_booked = true and customer _id = 2 where id =15 |
+
 
 Final results: `seat{id: 15, is_booked: true, customer_id: 2}`.
 Although the customer `1` book the seat first, the seat finally belongs to the customer `2`. We can notice that this is a `Lost update` concurrency problem. 
