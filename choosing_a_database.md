@@ -35,3 +35,18 @@ There are many cases you’re better off sticking with the default option of a r
 - You can easily find people with the experience of using them.
 - They are mature, so you are less likely to run into the rough edges of new technology
 - Picking a new technology will always introduce a risk of problems should things run into difficulties
+
+
+---
+### SQL
+traditional SQL databases are missing two important capabilities — linear write scalability (i.e. automatic sharding across multiple nodes) and automatic/zero-data loss failover.
+
+This means data volumes ingested cannot exceed the max write throughput of a single node.
+
+Additionally, some temporary data loss should be expected on failover
+
+. Zero downtime upgrades are also very difficult to achieve in the SQL database world.
+
+### NoSQL
+NoSQL DBs are usually distributed in nature where data gets partitioned or sharded across multiple nodes. 
+They mandate denormalization which means inserted data also needs to be copied multiple times to serve the specific queries you have in mind. 

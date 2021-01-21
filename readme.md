@@ -1,11 +1,11 @@
 - [Collected resources about database](#collected-resources-about-database)
 - [1. Factors to consider when choosing a database system](#1-factors-to-consider-when-choosing-a-database-system)
   - [1.1. Storage engine](#11-storage-engine)
-    - [Representatives](#representatives)
     - [Btree vs LSM Benchmark [3]](#btree-vs-lsm-benchmark-3)
+    - [Representatives](#representatives)
     - [Take aways](#take-aways)
   - [1.2. Types of databases](#12-types-of-databases)
-    - [1.2.1 Relational database - RDBMS  [4]](#121-relational-database---rdbms-4)
+    - [1.2.1 Relational database - RDBMS  [4]](#121-relational-database---rdbms--4)
       - [1.2.1.1 ACID](#1211-acid)
     - [1.2.2. NoSQL](#122-nosql)
       - [1.2.2.1. CAP theorem](#1221-cap-theorem)
@@ -22,8 +22,8 @@
     - [Reliability](#reliability)
     - [Scalability](#scalability)
     - [Maintainability](#maintainability)
-- [2. Scaling a database system [11]](#2-scaling-a-database-system-11)
-  - [2.1. Caching](#21-caching)
+- [2. Databases at scale](#2-databases-at-scale)
+  - [2.1. Caching  [11]](#21-caching--11)
     - [2.1.1. Types of database caching](#211-types-of-database-caching)
     - [2.1.2. Caching strategies](#212-caching-strategies)
       - [1. Cache-Aside (Lazy loading)](#1-cache-aside-lazy-loading)
@@ -34,7 +34,11 @@
     - [2.2.1. Single index [17]](#221-single-index-17)
     - [2.2.2. Composite index](#222-composite-index)
   - [2.3. Paritioning](#23-paritioning)
-  - [3.4. Sharding and replication](#34-sharding-and-replication)
+  - [3.4. Horizontal scaling: sharding and replication](#34-horizontal-scaling-sharding-and-replication)
+    - [3.4.1. Replication](#341-replication)
+    - [3.4.2. Sharding](#342-sharding)
+      - [When should we shard?](#when-should-we-shard)
+      - [Strategies of sharding](#strategies-of-sharding)
 - [3. Caveats for working with a database system](#3-caveats-for-working-with-a-database-system)
     - [3.1. Connection pool](#31-connection-pool)
   - [3.1. RDBMS](#31-rdbms)
@@ -54,7 +58,7 @@
 - [6. References](#6-references)
   
 # Collected resources about database
-
+https://dzone.com/articles/database-architectures-amp-use-cases-explained
 # 1. Factors to consider when choosing a database system
 ## 1.1. Storage engine
 A database storage engine is an internal software component that a database server uses to store, read, update, and delete data in the underlying memory and storage systems. [1]
@@ -69,11 +73,11 @@ A database storage engine is an internal software component that a database serv
 | **Pros**          | <ul><li>Data and indexes are organized with B-Tree concept and read/writes always has logarithmic time. For 1 million records, it takes 20 comparisions in the B-Tree to locate the required data/pointer in the index [2] </li><li>Each disk access take around 5ms. For 1 million records, it requires 15ms. For 1000 million records, it takes 1,5s.  For 1 billion records, the bill is 15 seconds just to access one row [2]</li><ul> | Fast sequential writes (as opposed to slow random writes in B-tree engines)                                                                                                                                                |
 | **Cons**          | <ul><li>The need to maintain a well-ordered data structure with random writes usually leads to poor write performance because random writes to the storage are more expensive than sequential writes</li></ul>                                                                                                                                                                                                                             | <ul><li>Exhibit poor read throughput in comparision to B-tree based engine</li><li>Consume more CPU resources during read operations and take more memory/disk storage(Can be reduced by using **Bloom filter**)</li></ul> |
 
-### Representatives
-![](https://miro.medium.com/max/2932/1*rQg6J-MX0zALdSiKO9wYkw.png)
-
 ### Btree vs LSM Benchmark [3]
 ![](https://github.com/wiredtiger/wiredtiger/wiki/attachments/LSM_btree_Throughput.png)
+
+### Representatives
+![](https://miro.medium.com/max/2932/1*rQg6J-MX0zALdSiKO9wYkw.png)
 
 ### Take aways
 - If you don't require **extreme write throughput**, `Btree` is likely to be a better choice. `Read throughput is better` and high volumes of writes can be maintained.
@@ -130,6 +134,9 @@ In a distributed computer system, you can only support two of the following guar
 - **C**onsistency: Every read receives the most recent write or an error
 - **A**vailability: Every request receives a response, without guarantee that it contains the most recent version of the information
 - **P**artition Tolerance: The system continues to operate despite arbitrary partitioning due to network failures [8].
+
+RDBMS prefer CP ⟶ ACID
+NoSQL prefer AP ⟶ BASE
 
 ![](images/readme.md/2020-10-18-18-11-26.png)
 
@@ -315,8 +322,8 @@ it for unanticipated use cases as requirements change. Also known as extensibili
 
 > See more details: [database-foundation.md](database-foundation.md)
 
-# 2. Scaling a database system [11]
-## 2.1. Caching 
+# 2. Databases at scale
+## 2.1. Caching  [11] 
 When you’re building distributed applications that require low latency and
 scalability, disk-based databases can pose a number of challenges.
 - Slow processing queries
@@ -334,7 +341,7 @@ its own resident cache working in a disconnected manner.
 - **Remote caches**:
   - A remote cache (or “side cache”) is a separate instance (or instances) dedicated for storing the cached data in-memory.
   - Remote caches are stored on dedicated servers and are typically built
-on key/value NoSQL stores, such as Redis and Memcached.
+on key/value NoSQL stores, such as Redis and Memcached. 
 
 ### 2.1.2. Caching strategies
 #### 1. Cache-Aside (Lazy loading)
@@ -547,7 +554,47 @@ PARTITION BY KEY(joined)
 PARTITIONS 6;
 ```
    
-## 3.4. Sharding and replication
+## 3.4. Horizontal scaling: sharding and replication
+### 3.4.1. Replication
+- Replication is the process of copying data from a central database to one or more databases.
+
+- Replication can be used to improve the availability of data by preventing the loss of a single server from causing your database service to become unavailable. 
+
+![](images/readme.md/2020-10-19-17-08-49.png)
+
+- If our workloads are **read-heavy**, horizontal scaling is usually achieved by spinning up read-replicas, which mirror updates to one or more primary nodes. Writes are always routed to the primary nodes while reads are handled by the read-replicas (ideally) or even by the primaries if the read-replicas cannot be reached.
+  
+### 3.4.2. Sharding
+
+![](images/readme.md/2020-10-19-16-56-48.png)
+
+- For **write-heavy** workloads, we usually resort to techniques such as data **sharding**.
+- Data sharding allows us to split (partition) the contents of one or more tables into multiple database nodes. This partitioning is achieved by means of a per-row shard key, which dictates which node is responsible for storing each row of the table. One caveat of this approach is that it introduces additional complexity at query time. While writes are quite efficient, reads are not trivial as the database might need to query each individual node and then aggregate the results together in order to answer even a simple query such as SELECT COUNT(*) FROM X.
+  
+#### When should we shard?
+Sharding is usually only performed when dealing with very large amounts of data. Here are some common scenarios where it may be beneficial to shard a database
+- The amount of application data grows to exceed the storage capacity of a single database node.
+- The volume of writes or reads to the database surpasses what a single node or its read replicas can handle, resulting in slowed response times or timeouts.
+- The network bandwidth required by the application outpaces the bandwidth available to a single database node and any read replicas, resulting in slowed response times or timeouts.
+  
+**Benefits of sharding**:
+- Help facilitate horizontal scaling, `scaling out`. Add more machines to existing cluster in order to spread out the load and allow for more traffic and faster processing
+- Speed up query responsetime
+- Make an application more reliable by mitigating the impact of outages.  With a sharded database, though, an outage is likely to affect only a single shard
+
+**Drawback of sharding**:
+- Deal with complexity of properly implementing a sharded database architecture. If done incorrectly, there's a significant risk that the sharding process can lead to lost data or corrupted tables.
+- Sometimes the shards will eventually become unbalanced
+- It can be very difficult to return it to its unsharded architecture.
+- Join across shard is costly, often performed at application level.
+- Sharding isn't natively supported by every database engine. For instance, PostgreSQL does not include automatic sharding as a feature
+
+#### Strategies of sharding
+https://www.digitalocean.com/community/tutorials/understanding-database-sharding
+
+**Sharding** is usually used with **Replication** in a database system to improve availability.
+
+![](images/readme.md/2020-10-19-17-21-23.png)
 
 # 3. Caveats for working with a database system
 ### 3.1. Connection pool
@@ -577,7 +624,7 @@ A transaction T1 updates a record which is read by T2. If T1 aborts then T2 now 
 - At time t2, transaction-Y writes A's value.
 - At time t3, Transaction-X reads A's value.
 - At time t4, Transactions-Y rollbacks. So, it changes A's value back to that of prior to t1.
-- So, Transaction-X now contains a value which has never become part of the stable databas
+- So, Transaction-X now contains a value which has never become part of the stable database
 
 #### 3.1.1.2. Phantom Read
 The so-called phantom problem occurs within a transaction when the same query produces different sets of rows at different times. For example, if a SELECT is executed twice, but returns a row the second time that was not returned the first time, the row is a “phantom” row.

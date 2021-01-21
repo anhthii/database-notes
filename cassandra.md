@@ -57,3 +57,4 @@ Every one second, each node communicates with up to theree other nodes, exchangi
 [1] Cassandra: The Definitive Guide (https://learning.oreilly.com/library/view/cassandra-the-definitive/9781098115159/)
 
 [2] https://www.udemy.com/course/apache-cassandra/
+https://www.javatpoint.com/use-cases-of-cassandra

@@ -7,6 +7,10 @@
 - Easy to set up a high availibity with `automatic failover`
 - `Built-in sharding` features help scaling out huge data collection, we don't have to do application-side sharding
 
+### weakingness
+
+
+
 ## Key features
 ### 1. Document data model
 ![](images/2020-10-09-08-07-27.png)
@@ -90,6 +94,8 @@ https://derickrethans.nl/managing-schema-changes.html
 - Mongo is focused on large datasets, works best in large cluster, which can require some effort to design and manage, setting up a Mongo cluster requires a little more forethought
 - Database management is complex
 - If indexing is implemented poorly or composite index in an incorrect order, MongoDB can be one of the `slowest database`
+- not good in applications where analytics are performed or where joins are required because there is no joins in MongoDB.
+
 
 ## Mongodb index
 http://learnmongodbthehardway.com/schema/indexes/
