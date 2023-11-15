@@ -33,7 +33,7 @@
   - [2.2. Indexing](#22-indexing)
     - [2.2.1. Single index [17]](#221-single-index-17)
     - [2.2.2. Composite index](#222-composite-index)
-  - [2.3. Paritioning](#23-paritioning)
+  - [2.3. Partitioning](#23-partitioning)
   - [3.4. Horizontal scaling: sharding and replication](#34-horizontal-scaling-sharding-and-replication)
     - [3.4.1. Replication](#341-replication)
     - [3.4.2. Sharding](#342-sharding)
@@ -487,7 +487,7 @@ will NOT benefit from this composite index because position is the second field.
 * Do not use an index if the field has `low cardinality`, the number of distinct values in that field. 
 * Do not use an index for small fixed-size tables. 
 
-## 2.3. Paritioning
+## 2.3. Partitioning
 Partitioning is the database process where very large tables are divided into multiple smaller parts. By splitting a large table into smaller, individual tables, queries that access only a fraction of the data can run faster because there is less data to scan. 
 ![](images/readme.md/2020-10-19-15-25-26.png)
 
